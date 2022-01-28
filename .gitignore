@@ -1,0 +1,5 @@
+/.env
+/CODEOWNERS
+/LICENSE.txt
+/build
+/node_modules
