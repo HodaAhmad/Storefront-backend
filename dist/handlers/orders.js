@@ -35,9 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
 var order_1 = require("../models/order");
-//import authenticateToken from '../middleware/authenticateJWT'
+var authenticateJWT_1 = __importDefault(require("../middleware/authenticateJWT"));
 var store = new order_1.ShoppingStoreOrders();
 //express handler function
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -101,8 +104,8 @@ var getUserOrders = function (_req, res) { return __awaiter(void 0, void 0, void
 }); };
 //route express function with route and response 
 var order_routes = function (app) {
-    app.get('/orders', index);
-    app.get('/userorders/:id', getUserOrders);
-    app.post('/orders', create);
+    app.get('/orders', authenticateJWT_1["default"], index);
+    app.get('/userorders/:id', authenticateJWT_1["default"], getUserOrders);
+    app.post('/orders', authenticateJWT_1["default"], create);
 };
 exports["default"] = order_routes;

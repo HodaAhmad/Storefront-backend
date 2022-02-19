@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express'
-//import authenticateToken from '../middleware/authenticateJWT'
+import authenticateToken from '../middleware/authenticateJWT'
 import {User, ShoppingStoreUser}from '../models/user';
 import  jwt  from 'jsonwebtoken';
 import dotenv from 'dotenv'
@@ -8,39 +8,18 @@ dotenv.config()
 
 const store = new ShoppingStoreUser()
 
-//express handler function
 const index = async (_req: Request, res: Response ) =>{
     const users = await store.index()
-    res.json(users)
+    res.status(200).json(users)
 }
 
 const show = async(_req:Request, res:Response) =>{
     const userID: string = _req.params.id
-    const users = await store.show(userID)
-    res.json(users)
+    const user = await store.show(userID)
+    res.status(200).json(user)
 }
-/*
-const create = async(_req:Request, res:Response) =>{
-    const user: User = {
-        firstName: _req.body.firstname,
-        lastName: _req.body.lastname,
-        password_digest: _req.body.password_digest
-    }
-    try{
-        if (!user.firstName || !user.password_digest) {
-            res.json('invalid username and password!')
-            return
-          }
-          const createdUser = await store.create(user);
-          var token = jwt.sign({user: createdUser}, process.env.TOKEN_SECRET as string);
-          res.json(token);  
-          
-    }catch(error){
-        res.status(400)
-        res.json(error)
-    }
-}
-*/
+
+
 const create = async(_req: Request, res: Response) => {
     const user: User = {
         firstName: _req.body.firstName,
@@ -48,19 +27,39 @@ const create = async(_req: Request, res: Response) => {
         password_digest: _req.body.password_digest
     }
     try{
-        const newUser = await store.create(user)
-        var token = jwt.sign({user: newUser}, process.env.TOKEN_SECRET as string);
-        res.status(200).json(token)
+        const newUser : User = await store.create(user)
+        const token = jwt.sign({user: newUser}, process.env.TOKEN_SECRET as string);
+        res.send({token})
     }
     catch (err){
+        res.json(err as string+user)
         res.status(400)
     }
 }
+
+const login  = async (_req: express.Request, res: express.Response) => {
+    try {
+      const user: User = await store.authenticateUser(
+        _req.body.firsNname,
+        _req.body.lastName,
+        _req.body.password_digest
+      )
+      if (user !== null){
+      const token = jwt.sign({ user }, process.env.TOKEN_SECRET as string);
+      const {password_digest, ...others} = user
+      res.send({ ...others,token });
+      }
+    } catch (err) {
+      res.status(400);
+      res.json(err as string);
+    }
+  };
+  
 //route express function with route and response 
 const user_routes = (app: express.Application) => {
-    app.get('/users',index)
-    app.get('/users/:id', show)
-    app.post('/create',create)
+    app.get('/users',authenticateToken,index)
+    app.get('/users/:id', authenticateToken ,show)
+    app.post('/users',create)
 }
 
 export default user_routes

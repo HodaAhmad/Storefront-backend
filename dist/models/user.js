@@ -105,34 +105,32 @@ var ShoppingStoreUser = /** @class */ (function () {
             });
         });
     };
-    //create user function
-    ShoppingStoreUser.prototype.create = function (usr) {
+    ShoppingStoreUser.prototype.create = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var hashedPassword, conn, sql, result, err_2;
+            var hashedPassword, conn, sql, result, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        hashedPassword = bcrypt_1["default"].hashSync(usr.password_digest + BCRYPT_PASSWORD, parseInt(SALT_ROUNDS, 10));
+                        hashedPassword = bcrypt_1["default"].hashSync(user.password_digest + BCRYPT_PASSWORD, parseInt(SALT_ROUNDS, 10));
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 4, , 5]);
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 2:
                         conn = _a.sent();
-                        sql = 'INSERT INTO users (firstName, lastName, password_digest) VALUES ($1, $2, $3) RETURNING *';
+                        sql = "INSERT INTO users(firstName,lastName,password_digest) VALUES ($1, $2, $3) RETURNING *";
                         return [4 /*yield*/, conn.query(sql, [
-                                usr.firstName,
-                                usr.lastName,
+                                user.firstName,
+                                user.lastName,
                                 hashedPassword
                             ])];
                     case 3:
                         result = _a.sent();
                         conn.release();
-                        console.log("user ".concat(usr.id, " created successfully "));
                         return [2 /*return*/, result.rows[0]];
                     case 4:
-                        err_2 = _a.sent();
-                        throw new Error("Could not add user ".concat(usr.id, ". ").concat(err_2));
+                        error_2 = _a.sent();
+                        throw new Error("Could not create new user ".concat(user.id, ". ").concat(error_2));
                     case 5: return [2 /*return*/];
                 }
             });
@@ -140,7 +138,7 @@ var ShoppingStoreUser = /** @class */ (function () {
     };
     ShoppingStoreUser.prototype["delete"] = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, err_3;
+            var conn, sql, result, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -156,15 +154,15 @@ var ShoppingStoreUser = /** @class */ (function () {
                         conn.release();
                         return [2 /*return*/, result[0]];
                     case 4:
-                        err_3 = _a.sent();
-                        throw new Error("couldnt delete user with id".concat(id, ". ").concat(err_3));
+                        err_2 = _a.sent();
+                        throw new Error("couldnt delete user with id".concat(id, ". ").concat(err_2));
                     case 5: return [2 /*return*/];
                 }
             });
         });
     };
     //password authintication function
-    ShoppingStoreUser.prototype.authenticate = function (fname, lname, password) {
+    ShoppingStoreUser.prototype.authenticateUser = function (fname, lname, password) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, user;
             return __generator(this, function (_a) {

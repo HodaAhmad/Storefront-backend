@@ -40,27 +40,26 @@ export class ShoppingStoreUser {
         }
       } 
 
-      //create user function
-      async create(usr: User): Promise<User> {
+
+      async create(user: User): Promise<User> {
         const hashedPassword = bcrypt.hashSync(
-          usr.password_digest + BCRYPT_PASSWORD,
+          user.password_digest + BCRYPT_PASSWORD,
           parseInt(SALT_ROUNDS as string, 10)
         )
         try {
           const conn = await client.connect()
-          const sql = 'INSERT INTO users (firstName, lastName, password_digest) VALUES ($1, $2, $3) RETURNING *'
+          const sql = `INSERT INTO users(firstName,lastName,password_digest) VALUES ($1, $2, $3) RETURNING *`
           const result = await conn.query(sql, [
-            usr.firstName,
-            usr.lastName,
+            user.firstName,
+            user.lastName,
             hashedPassword
           ])
           conn.release()
-          console.log(`user ${usr.id} created successfully `)
           return result.rows[0]
-        } catch (err) {
-          throw new Error(`Could not add user ${usr.id}. ${err}`)
+        } catch (error) {
+          throw new Error(`Could not create new user ${user.id}. ${error}`)
         }
-      } 
+      }
 
       async delete(id: string) : Promise<User>{
         try{
@@ -75,24 +74,24 @@ export class ShoppingStoreUser {
       }
       
     //password authintication function
-async authenticate(fname: string, lname: string, password:string) : Promise<User | null> {
-    
-    const conn = await client.connect()
-    const sql = 'SELECT password_digest FROM users WHERE firstName=($1) AND lastName =($2);'
+    async authenticateUser(fname: string, lname: string, password:string) : Promise<User | any> {
+        
+        const conn = await client.connect()
+        const sql = 'SELECT password_digest FROM users WHERE firstName=($1) AND lastName =($2);'
 
-    const result = await conn.query(sql, [fname, lname])
+        const result = await conn.query(sql, [fname, lname])
 
-    //console.log(password+pepper)
+        //console.log(password+pepper)
 
-    if(result.rows.length) {
-        const user = result.rows[0]
+        if(result.rows.length) {
+            const user = result.rows[0]
 
-        //console.log(user)
+            //console.log(user)
 
-        if (bcrypt.compareSync(password+BCRYPT_PASSWORD, user.password_digest)){
-            return user
+            if (bcrypt.compareSync(password+BCRYPT_PASSWORD, user.password_digest)){
+                return user
+            }
         }
-    }
-    return null
-    }
+        return null
+        }
 }

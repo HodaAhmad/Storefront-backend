@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,17 +46,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-//import authenticateToken from '../middleware/authenticateJWT'
+var authenticateJWT_1 = __importDefault(require("../middleware/authenticateJWT"));
 var user_1 = require("../models/user");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1["default"].config();
 var store = new user_1.ShoppingStoreUser();
-//express handler function
 var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users;
     return __generator(this, function (_a) {
@@ -53,47 +74,25 @@ var index = function (_req, res) { return __awaiter(void 0, void 0, void 0, func
             case 0: return [4 /*yield*/, store.index()];
             case 1:
                 users = _a.sent();
-                res.json(users);
+                res.status(200).json(users);
                 return [2 /*return*/];
         }
     });
 }); };
 var show = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userID, users;
+    var userID, user;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 userID = _req.params.id;
                 return [4 /*yield*/, store.show(userID)];
             case 1:
-                users = _a.sent();
-                res.json(users);
+                user = _a.sent();
+                res.status(200).json(user);
                 return [2 /*return*/];
         }
     });
 }); };
-/*
-const create = async(_req:Request, res:Response) =>{
-    const user: User = {
-        firstName: _req.body.firstname,
-        lastName: _req.body.lastname,
-        password_digest: _req.body.password_digest
-    }
-    try{
-        if (!user.firstName || !user.password_digest) {
-            res.json('invalid username and password!')
-            return
-          }
-          const createdUser = await store.create(user);
-          var token = jwt.sign({user: createdUser}, process.env.TOKEN_SECRET as string);
-          res.json(token);
-          
-    }catch(error){
-        res.status(400)
-        res.json(error)
-    }
-}
-*/
 var create = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, newUser, token, err_1;
     return __generator(this, function (_a) {
@@ -111,20 +110,45 @@ var create = function (_req, res) { return __awaiter(void 0, void 0, void 0, fun
             case 2:
                 newUser = _a.sent();
                 token = jsonwebtoken_1["default"].sign({ user: newUser }, process.env.TOKEN_SECRET);
-                res.status(200).json(token);
+                res.send({ token: token });
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _a.sent();
+                res.json(err_1 + user);
                 res.status(400);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
+var login = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, token, password_digest, others, err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, store.authenticateUser(_req.body.firsNname, _req.body.lastName, _req.body.password_digest)];
+            case 1:
+                user = _a.sent();
+                if (user !== null) {
+                    token = jsonwebtoken_1["default"].sign({ user: user }, process.env.TOKEN_SECRET);
+                    password_digest = user.password_digest, others = __rest(user, ["password_digest"]);
+                    res.send(__assign(__assign({}, others), { token: token }));
+                }
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                res.status(400);
+                res.json(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 //route express function with route and response 
 var user_routes = function (app) {
-    app.get('/users', index);
-    app.get('/users/:id', show);
-    app.post('/create', create);
+    app.get('/users', authenticateJWT_1["default"], index);
+    app.get('/users/:id', authenticateJWT_1["default"], show);
+    app.post('/users', create);
 };
 exports["default"] = user_routes;

@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import {Order, ShoppingStoreOrders} from '../models/order'
-//import authenticateToken from '../middleware/authenticateJWT'
+import authenticateToken from '../middleware/authenticateJWT'
 
 const store = new ShoppingStoreOrders()
 
@@ -41,9 +41,9 @@ const getUserOrders = async (_req: Request, res: Response) => {
 
 //route express function with route and response 
 const order_routes = (app: express.Application) => {
-    app.get('/orders', index)
-    app.get('/userorders/:id', getUserOrders)
-    app.post('/orders', create)
+    app.get('/orders', authenticateToken,index)
+    app.get('/userorders/:id',authenticateToken, getUserOrders)
+    app.post('/orders', authenticateToken,create)
 }
 
 export default order_routes

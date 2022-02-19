@@ -1,17 +1,18 @@
-/*import express, {Request, Response} from 'express';
-//@ts-ignore
+import express, {Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
 
 // Create token Validator middleware
 
 const authenticateToken = (req: Request, res: Response, next: () => void) => {
     try {
-        if (process.env.TOKEN_SECRET) {
-            const authorizeHeader= (req.headers.authorization as unknown) as string;
-            const token = authorizeHeader.split(' ')[1]
-            const decoded = jwt.verify(token, process.env.TOKEN_SECRET)
-            next()
+        const authorizeHeader= (req.headers.authorization as unknown) as string;
+
+        if (!authorizeHeader) {
+            throw new Error('No token')
         }
+        const token = authorizeHeader.split(' ')[1]
+        jwt.verify(token, process.env.TOKEN_SECRET as string)
+        next()
 
     } catch (error) {
         res.status(401);
@@ -19,4 +20,3 @@ const authenticateToken = (req: Request, res: Response, next: () => void) => {
     }
 }
 export default authenticateToken;
-*/

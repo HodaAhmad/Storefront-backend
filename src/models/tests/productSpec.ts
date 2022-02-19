@@ -14,12 +14,24 @@ let testProduct : Product;
 describe("Product Model", ()=>{
     it('should have an index method', () => {
         expect(store.index).toBeDefined();
-    });
+      });
+    
+      it('should have a show method', () => {
+        expect(store.show).toBeDefined();
+      });
+    
+      it('should have a create method', () => {
+        expect(store.create).toBeDefined();
+      });
 
     //testing index method
     it('Should return a list of products : index method', async () => {
         const result = await store.index();
-        expect(result).toEqual([]);
+        expect(result).toContain(
+            jasmine.objectContaining({
+                id: 1
+            })
+        );
     });
 
     it('should create a product', async () => {

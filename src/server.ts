@@ -16,10 +16,9 @@ app.get('/', function (req: Request, res: Response) {
     res.send('Hello, welcome to a store front of a shopping application!')
 })
 
-app.use("/api/products", product_routes);
-app.use("/api/users", user_routes);
-app.use("/api/orders", order_routes);
-
+user_routes(app);
+product_routes(app)
+order_routes(app)
 
 app.listen(3000,  () => {
     console.log(`starting app on: 3000`)

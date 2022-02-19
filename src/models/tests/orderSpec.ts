@@ -11,7 +11,16 @@ describe("Order Model", ()=>{
 
     it('should have an index method', () => {
         expect(store.index).toBeDefined();
-    });
+      });
+    
+      it('should have a show method', () => {
+        expect(store.show).toBeDefined();
+      });
+    
+      it('should have a create method', () => {
+        expect(store.create).toBeDefined();
+      });
+    
 
     beforeAll(async () => {
         const result: User = await userStore.create({
@@ -27,7 +36,12 @@ describe("Order Model", ()=>{
     //testing index method
     it('Should return a list of orders : index method', async () => {
         const result = await store.index();
-        expect(result).toEqual([]);
+        expect(result).toContain(
+            jasmine.objectContaining({
+                id: 1,
+                status: 'active'
+            })
+        );
     });
 
     //should create an order
