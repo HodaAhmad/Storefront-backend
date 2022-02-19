@@ -1,11 +1,14 @@
-import express, { Request, Response } from 'express'
+import express, { application, Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import product_routes from './handlers/products'
 import order_routes from './handlers/orders'
 import user_routes from './handlers/users'
+import dotenv from 'dotenv'
+
+dotenv.config();
 
 const app: express.Application = express()
-const address: string = "0.0.0.0:3000"
+const {PORT} = process.env
 
 app.use(bodyParser.json())
 
@@ -18,6 +21,8 @@ app.use("/api/users", user_routes);
 app.use("/api/orders", order_routes);
 
 
-app.listen(3000, function () {
-    console.log(`starting app on: ${address}`)
+app.listen(3000,  () => {
+    console.log(`starting app on: 3000`)
 })
+
+export default app;

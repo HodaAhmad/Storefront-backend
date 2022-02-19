@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express';
+/*import express, {Request, Response} from 'express';
 //@ts-ignore
 import jwt from 'jsonwebtoken';
 
@@ -19,3 +19,4 @@ const authenticateToken = (req: Request, res: Response, next: () => void) => {
     }
 }
 export default authenticateToken;
+*/

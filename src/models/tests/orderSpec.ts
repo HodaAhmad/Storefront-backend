@@ -22,7 +22,7 @@ describe("Order Model", ()=>{
         testUser = result
       })
     afterAll(async () => {
-        await userStore.delete(testUser.id as number)
+        await userStore.delete(testUser.id as string)
     })
     //testing index method
     it('Should return a list of orders : index method', async () => {
@@ -33,7 +33,8 @@ describe("Order Model", ()=>{
     //should create an order
     it('should create an order : create method', async () => {
         const result = await store.create({
-            user_id: testUser.id, 
+            //user_id: testUser.id, 
+            user_id: testUser.id,
             status: "Open"
         })
         testOrder = result

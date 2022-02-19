@@ -3,7 +3,7 @@ import client from '../database'
 import bcrypt from 'bcrypt'
 
 export type User = {
-	id?: number;
+	id?: string;
 	firstName: string;
 	lastName: string;
 	password_digest: string;
@@ -14,7 +14,7 @@ dotenv.config();
 const { BCRYPT_PASSWORD, SALT_ROUNDS } = process.env;
 
 export class ShoppingStoreUser {
-    //index function
+    //index functions
     async index(): Promise<User[]> {
       try {
         const conn = await client.connect() //connecting to database
@@ -28,7 +28,7 @@ export class ShoppingStoreUser {
     }
 
     //get user function
-    async show(id: number): Promise<User> {
+    async show(id: string): Promise<User> {
         try {
           const conn = await client.connect() //connecting to database
           const sql = 'SELECT * FROM users WHERE id=($1);' //sql query
@@ -55,13 +55,14 @@ export class ShoppingStoreUser {
             hashedPassword
           ])
           conn.release()
+          console.log(`user ${usr.id} created successfully `)
           return result.rows[0]
         } catch (err) {
-          throw new Error(`Could not add user. ${err}`)
+          throw new Error(`Could not add user ${usr.id}. ${err}`)
         }
       } 
 
-      async delete(id: number) : Promise<User>{
+      async delete(id: string) : Promise<User>{
         try{
           const conn = await client.connect()
           const sql = `DELETE FROM users WHERE id=($1)`

@@ -1,13 +1,13 @@
 import client from '../database';
 
 export type Order = {
-    id?: number;
+    id?: string;
     status: string;
-    user_id?: number;
+    user_id?: string;
 }
 
 export type OrderProduct = {
-    id?: number;
+    id?: string;
     quantity: number;
     productID: number;
     orderID:number;
@@ -41,7 +41,7 @@ export class ShoppingStoreOrders{
       }
 
     //get order 
-    async show(id: number): Promise<Order>{
+    async show(id: string): Promise<Order>{
         try{
             const conn = await client.connect() //connect to db
             const sql = `SELECT * FROM orders WHERE id=($1)` //sql query
@@ -54,7 +54,7 @@ export class ShoppingStoreOrders{
     }
 
     //get orders by user
-    async getUserOrders(user_id: number): Promise<Order[]>{
+    async getUserOrders(user_id: string): Promise<Order[]>{
         try{
             const conn = await client.connect() //connect to db
             const sql = `SELECT * FROM orders WHERE user_id=($1) AND status ='active'` //getting result orders by user

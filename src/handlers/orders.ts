@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import {Order, ShoppingStoreOrders} from '../models/order'
-import authenticateToken from '../middleware/authenticateJWT'
+//import authenticateToken from '../middleware/authenticateJWT'
 
 const store = new ShoppingStoreOrders()
 
@@ -29,7 +29,8 @@ const create = async(_req: Request, res: Response) =>{
 const getUserOrders = async (_req: Request, res: Response) => {
     const userID: string = _req.params.id
     try{
-        const userOrders = await store.getUserOrders(parseInt(userID))
+        //const userOrders = await store.getUserOrders(parseInt(userID))
+        const userOrders = await store.getUserOrders(userID)
         res.json(userOrders)
     } catch (err) {
         res.status(400)
@@ -40,9 +41,9 @@ const getUserOrders = async (_req: Request, res: Response) => {
 
 //route express function with route and response 
 const order_routes = (app: express.Application) => {
-    app.get('/orders', index, authenticateToken)
-    app.get('/userorders/:id', authenticateToken, getUserOrders)
-    app.post('/orders', authenticateToken, create)
+    app.get('/orders', index)
+    app.get('/userorders/:id', getUserOrders)
+    app.post('/orders', create)
 }
 
 export default order_routes

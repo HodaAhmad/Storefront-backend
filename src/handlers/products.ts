@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
 import { Product, ShoppingStore } from '../models/product'
-import authenticateToken from '../middleware/authenticateJWT'
+//import authenticateToken from '../middleware/authenticateJWT'
 
 const store = new ShoppingStore()
 
@@ -35,7 +35,7 @@ const create = async(_req:Request, res:Response) =>{
 const product_routes = (app: express.Application) => {
     app.get('/products', index)
     app.get('/products/:id',show)
-    app.post('/products', authenticateToken, create)
+    app.post('/products', create)
 }
 
 export default product_routes
