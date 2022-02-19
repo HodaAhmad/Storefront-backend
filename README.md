@@ -2,9 +2,9 @@
 
 ## Prerequisites
 
-node version 12 or 10
-yarn
-npm
+- node version 12 or 10
+- yarn
+- npm
 
 ## Configuration
 
@@ -18,15 +18,15 @@ npm
 
 ### env file instructions
 
-POSTGRES_HOST=127.0.0.1
-POSTGRES_DB=shopping
-POSTGRES_DB_TEST=shopping_test
-POSTGRES_USER=shopping_user
-POSTGRES_PASSWORD=password
-ENV=dev
-BCRYPT_PASSWORD=speak-friend-and-enter
-SALT_ROUNDS=10
-TOKEN_SECRET=great123
+* POSTGRES_HOST=127.0.0.1
+* POSTGRES_DB=shopping
+* POSTGRES_DB_TEST=shopping_test
+* POSTGRES_USER=shopping_user
+* POSTGRES_PASSWORD=password
+* ENV=dev
+* BCRYPT_PASSWORD=speak-friend-and-enter
+* SALT_ROUNDS=10
+* TOKEN_SECRET=great123
 
 ## Database Setup
 
@@ -36,8 +36,12 @@ TOKEN_SECRET=great123
 ### Database name: "shopping" 
 ### Test database name: "shopping_test"
 
-to set up database:
+## to set up database:
 
-CREATE USER shopping_user WITH PASSWORD 'password'; CREATE DATABASE shopping; GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user; CREATE DATABASE shopping_test; GRANT ALL PRIVILEGES ON DATABASE shopping_test TO shopping_user;
+- CREATE USER shopping_user WITH PASSWORD 'password'; 
+- CREATE DATABASE shopping; 
+- GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user; 
+- CREATE DATABASE shopping_test; 
+- GRANT ALL PRIVILEGES ON DATABASE shopping_test TO shopping_user;
 
 #### Application configured to run on port 3000
