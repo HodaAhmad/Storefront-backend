@@ -8,15 +8,15 @@ npm
 
 ## Configuration
 
-Run yarn to get dependencies
-Create the Database as in env description below
-Make env file
-Follow REQUIREMENT file to see endpoints info & Database schema
-Insall postgresql
-Connect to postgres and create database shopping as well as create database shopping_test
-run yarn test to test models and endpoints
+* Run yarn to get dependencies
+* Create the Database as in env description below
+* Make env file
+* Follow REQUIREMENT file to see endpoints info & Database schema
+* Insall postgresql
+* Connect to postgres and create database shopping as well as create database shopping_test
+* run yarn test to test models and endpoints
 
-## env file instructions
+### env file instructions
 
 POSTGRES_HOST=127.0.0.1
 POSTGRES_DB=shopping
@@ -30,11 +30,11 @@ TOKEN_SECRET=great123
 
 ## Database Setup
 
-# Host: 127.0.0.1 
-# Port: 5432 
-# Database user: "shopping_user" 
-# Database name: "shopping" 
-# Test database name: "shopping_test"
+### Host: 127.0.0.1 
+###  Port: 5432 
+### Database user: "shopping_user" 
+### Database name: "shopping" 
+### Test database name: "shopping_test"
 
 to set up database:
 
