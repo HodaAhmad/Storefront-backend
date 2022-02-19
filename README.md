@@ -40,4 +40,4 @@ to set up database:
 
 CREATE USER shopping_user WITH PASSWORD 'password'; CREATE DATABASE shopping; GRANT ALL PRIVILEGES ON DATABASE shopping TO shopping_user; CREATE DATABASE shopping_test; GRANT ALL PRIVILEGES ON DATABASE shopping_test TO shopping_user;
 
-# Application configured to run on port 3000
+#### Application configured to run on port 3000
