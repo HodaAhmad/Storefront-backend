@@ -1,21 +1,39 @@
 # API Requirements
-DATABASE SCHEMA
+## DATABASE SCHEMA
 
-Users table CREATE TABLE users ( id SERIAL PRIMARY KEY, firstName VARCHAR(40), lastName VARCHAR(40), password_digest VARCHAR(100) );
-Product table CREATE TABLE product ( id SERIAL PRIMARY KEY, name VARCHAR(40), price integer, category VARCHAR(100) );
-Orders table CREATE TABLE orders ( id SERIAL PRIMARY KEY, status VARCHAR(25), user_id INTEGER REFERENCES users(id) NOT NULL );
-ENDPOINTS
+### Users table 
+- CREATE TABLE users ( id SERIAL PRIMARY KEY, firstName VARCHAR(40), lastName VARCHAR(40), password_digest VARCHAR(100) );
 
-User endpoints
+### Product table 
+- CREATE TABLE product ( id SERIAL PRIMARY KEY, name VARCHAR(40), price integer, category VARCHAR(100) );
 
-/api/users (GET) index
-/api/users/:id (GET) show
-/api/users (POST) create
-Products endpoints
+### Orders table 
+- CREATE TABLE orders ( id SERIAL PRIMARY KEY, status VARCHAR(25), user_id INTEGER REFERENCES users(id) NOT NULL );
 
-/api/products (GET) index
-/api/products (POST) create
+### Order Product table 
+- CREATE TABLE order_product (
+    id SERIAL PRIMARY KEY,
+    quantity INTEGER,
+    product_id INTEGER REFERENCES product(id) NOT NULL,
+    order_id INTEGER REFERENCES orders(id) NOT NULL
+    );
+
+## ENDPOINTS
+
+### User endpoints
+
+/users (GET) index
+/users/:id (GET) show
+/users (POST) create
+
+### Products endpoints
+
+/products (GET) index
+/products/:id (GET) show
+/products (POST) create
+
 Orders endpoints
 
-/api/orders (GET) index
-/api/userorders/:id (GET) getUserOrders
+/orders (GET) index
+/userorders/:id (GET) getUserOrders
+/orders (POST) create
