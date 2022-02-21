@@ -1,10 +1,10 @@
 import supertest from "supertest";
 import app from "../../server";
 import { User } from "../../models/user";
+import { Response } from 'express';
 
 const route = supertest(app)
 
-let token: string
 let result: supertest.Response
 
 
@@ -16,7 +16,7 @@ describe('Testing /users endpoints', () =>{
         lastName: 'Anis',
         password_digest: 'hodahoda'
       };
-
+      
     it('should create new user', async () => {
         const response = await route.post('/users').send(testUser);
         expect(200);
@@ -24,7 +24,7 @@ describe('Testing /users endpoints', () =>{
         //console.log('Token', token);
       });
 
-    it(' Should respond with status 200', async () =>{
+    it('Should respond with status 200', async () =>{
         result = await route.post(`/users`).send({
             firstName: 'Hoda',
             lastName:'Anis',
@@ -35,5 +35,10 @@ describe('Testing /users endpoints', () =>{
 
     })
 
+    it('users/id : should respond with unauthorized', async () => {
+      const Response = await route
+        .get(`/users/${testUser.id}`)
+        .expect(401);
+    })
 
 }) 

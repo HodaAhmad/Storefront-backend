@@ -42,6 +42,14 @@ describe('testing for  /orders', () => {
         .expect(200)
     })
 
+    it ('/userorders/:id : should respond with 200' ,async() =>{
+        await route
+        .get(`/userorders/1`)
+        .set('Authorization', 'Bearer ' + token)
+        .expect(200)
+    })
+    
+
 
 
 })

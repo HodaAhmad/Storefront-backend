@@ -1,7 +1,6 @@
 import supertest from "supertest";
 import app from "../../server";
 import { Product } from "../../models/product";
-import { request } from "express";
 import { User } from "../../models/user";
 
 const route = supertest(app); 
@@ -44,6 +43,13 @@ describe('Testing product endpoints', () => {
         it ('should list products' ,async() =>{
             await route
             .get('/products')
+            .set('Authorization', 'Bearer ' + token)
+            .expect(200)
+        })
+
+        it ('/id : should respond with 200' ,async() =>{
+            await route
+            .get('/products/2')
             .set('Authorization', 'Bearer ' + token)
             .expect(200)
         })

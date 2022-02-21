@@ -12,7 +12,7 @@ const index = async (_req: Request, res: Response ) =>{
 
 const show = async(_req:Request, res:Response) =>{
     const productID: string = _req.params.id
-    const products = await store.show(parseInt(productID))
+    const products = await store.show(productID)
     res.json(products)
 }
 

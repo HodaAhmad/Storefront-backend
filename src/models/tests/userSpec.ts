@@ -34,13 +34,13 @@ describe("User Model", ()=>{
       password_digest: 'goodgod'
     })
     testUser = createdUser
-    console.log(testUser)
+    //console.log(testUser)
 
     expect(testUser).toEqual(
       jasmine.objectContaining({
         id: testUser.id,
-        firstName: 'Hoda',
-        lastName: 'Anis'
+        firstname: 'Hoda',
+        lastname: 'Anis'
       })
     )
   })
@@ -62,8 +62,8 @@ describe("User Model", ()=>{
         expect(result).toEqual(
             jasmine.objectContaining({
                 id: testUser.id,
-                firstName: "Hoda",
-                lastName: "Anis"
+                firstname: "Hoda",
+                lastname: "Anis"
             })
         )
     }); 
